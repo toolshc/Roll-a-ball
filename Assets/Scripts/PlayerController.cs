@@ -1,13 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour {
 
 	public float speed;
+	private int count;
+
+	public GameObject textGuiObj;
+	private Text gameText;
 
 	// Use this for initialization
 	void Start () {
-	
+		count = 0;
+		gameText = textGuiObj.GetComponent<Text> ();
+		SetCountText();
 	}
 	
 	// Update is called once per frame
@@ -24,6 +31,18 @@ public class PlayerController : MonoBehaviour {
 
 		GetComponent<Rigidbody>().AddForce (movement * speed * Time.deltaTime);
 
+	}
+
+	void OnTriggerEnter(Collider other) {
+		if (other.gameObject.tag == "PickUp") {
+			other.gameObject.SetActive(false);
+			count = count + 1;
+			SetCountText();
+		}
+	}
+
+	void SetCountText(){
+		gameText.text = "Player Score: " +  count;
 	}
 
 }
